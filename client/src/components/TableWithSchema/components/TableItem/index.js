@@ -4,13 +4,12 @@ import { useState } from 'react';
 
 const cx = classNames.bind(styles);
 
-function TableItem() {
+function TableItem({ updateData }) {
    const [tableName, setTableName] = useState();
    const [columns, setColumns] = useState([]);
 
    const addColumn = () => {
       setColumns([...columns, { name: '', type: '' }]);
-      console.log('addColumn', columns);
    };
 
    const removeEmptyColumns = (index) => {
@@ -18,6 +17,7 @@ function TableItem() {
       if (index !== columns.length - 1 && columns[index].name === '') {
          columns.splice(index, 1);
          setColumns([...columns]);
+         updateData({ name: tableName, columns: columns });
       }
    };
 
@@ -26,10 +26,12 @@ function TableItem() {
       if (index === columns.length - 1) {
          addColumn();
       } else setColumns([...columns]);
+      updateData({ name: tableName, columns: columns });
    };
 
    const handleChangeTableName = (event) => {
       setTableName(event.target.value);
+      updateData({ name: tableName, columns: columns });
       if (columns.length < 1) setColumns([{ name: '', type: '' }]);
    };
 
