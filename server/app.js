@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const passport = require("passport");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
+const cors = require("cors");
 require("dotenv").config();
 
 var app = express();
@@ -21,6 +22,7 @@ require("./config/passport")(passport);
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
+app.use(cors());
 
 app.set("view engine", "ejs");
 

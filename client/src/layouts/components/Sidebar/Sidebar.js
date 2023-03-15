@@ -15,7 +15,7 @@ function Sidebar() {
             <div className={cx('logo')}>🤖 GPT Query</div>
             <MenuItem title="Home" to={config.routes.home} />
             <MenuItem title="Contacts" to={config.routes.contacts} />
-            <MenuItem title="Logout" to={config.routes.logout} />
+            <MenuItem title="Logout" to={config.routes.login} />
             <p className={cx('title')}>Databases</p>
             <MenuItem title="Test database" to={`${config.routes.database}/test`} />
             <p className={cx('title')}>Social links</p>
