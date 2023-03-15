@@ -1,0 +1,23 @@
+.wrapper {
+   display: flex;
+   flex-direction: column;
+   border: 1px solid #e4e4e4;
+   border-radius: 8px;
+   max-width: 800px;
+   margin-top: 8px;
+}
+
+.header {
+   display: flex;
+   padding: 8px;
+}
+
+.icon {
+}
+
+.title {
+}
+
+.body {
+   border-top: 1px solid #e4e4e4;
+}
