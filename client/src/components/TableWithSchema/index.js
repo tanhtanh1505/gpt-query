@@ -6,7 +6,7 @@ import styles from './TableWithSchema.module.scss';
 
 const cx = classNames.bind(styles);
 
-function TableWithSchema({ icon, title, options }) {
+function TableWithSchema({ icon, title, onChange }) {
    const [tableItems, setTableItems] = useState([{ name: '', columns: { name: '', type: '' } }]);
 
    useEffect(() => {
@@ -25,7 +25,7 @@ function TableWithSchema({ icon, title, options }) {
    const updateTable = (index) => (value) => {
       tableItems[index] = value;
       setTableItems([...tableItems]);
-      console.log(tableItems);
+      onChange(tableItems);
    };
 
    return (

@@ -4,10 +4,11 @@ import styles from './TableWithSelect.module.scss';
 
 const cx = classNames.bind(styles);
 
-function TableWithSelect({ icon, title, options }) {
+function TableWithSelect({ icon, title, options, onChange }) {
    //const options = ['One', 'Two', 'Three', 'Four', 'Five'];
    const onOptionChangeHandler = (event) => {
       console.log('User Selected Value - ', event.target.value);
+      onChange(event.target.value);
    };
 
    return (
