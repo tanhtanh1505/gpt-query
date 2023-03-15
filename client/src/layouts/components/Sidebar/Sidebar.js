@@ -17,7 +17,7 @@ function Sidebar() {
             <MenuItem title="Contacts" to={config.routes.contacts} />
             <MenuItem title="Logout" to={config.routes.logout} />
             <p className={cx('title')}>Databases</p>
-            <MenuItem title="Test database" to={config.routes.database} />
+            <MenuItem title="Test database" to={`${config.routes.database}/test`} />
             <p className={cx('title')}>Social links</p>
             <MenuItem title="Facebook" to={config.routes.socials} icon={<FontAwesomeIcon icon={faHome} />} />
          </Menu>

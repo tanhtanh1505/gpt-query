@@ -9,6 +9,7 @@ import Register from '~/pages/Register';
 import Home from '~/pages/Home';
 import Contact from '~/pages/Contact';
 import Database from '~/pages/Database';
+import NewDatabase from '~/pages/NewDatabase';
 
 // Public routes
 const publicRoutes = [
@@ -16,7 +17,8 @@ const publicRoutes = [
    { path: config.routes.register, component: Register, layout: ContentOnly },
    { path: config.routes.home, component: Home },
    { path: config.routes.contacts, component: Contact },
-   { path: config.routes.database, component: Database },
+   { path: config.routes.database, component: NewDatabase },
+   { path: `${config.routes.database}/:id`, component: Database },
 ];
 
 const privateRoutes = [];
