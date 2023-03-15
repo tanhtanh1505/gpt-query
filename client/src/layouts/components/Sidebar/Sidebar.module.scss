@@ -1,0 +1,21 @@
+.wrapper {
+   padding: 16px;
+   height: 100%;
+
+   width: 260px;
+   border-right: 1px solid #e4e4e4;
+}
+
+.title {
+   font-size: 1.65rem;
+   font-weight: 700;
+   color: var(--gray);
+   text-decoration: none;
+   margin-top: 16px;
+}
+
+.logo {
+   font-size: 2.5rem;
+   font-weight: 800;
+   margin-bottom: 12px;
+}
