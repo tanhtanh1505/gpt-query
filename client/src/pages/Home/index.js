@@ -1,9 +1,7 @@
 import classNames from 'classnames/bind';
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import config from '~/config';
 import styles from './Home.module.scss';
-import axios from 'axios';
 import Button from '~/components/Button';
 
 const cx = classNames.bind(styles);
@@ -12,27 +10,20 @@ function Home() {
    const [user, setUser] = useState();
 
    useEffect(() => {
-      axios.get(`${config.api.url}/info`).then((res) => {
-         console.log(res);
-         setUser(res.data.user);
-      });
-   });
+      const theUser = localStorage.getItem('user');
 
-   const handleGetInfo = () => {
-      axios.get(`${config.api.url}/info`).then((res) => {
-         console.log(res.data);
-         setUser(res.data.user);
-      });
-   };
+      if (theUser && !theUser.includes('undefined')) {
+         setUser(JSON.parse(theUser));
+      }
+   }, []);
 
    return (
       <div className={cx('wrapper')}>
          <h1>Home</h1>
-         {user && <p>{user}</p>}
-         <Button onClick={handleGetInfo}>Get info</Button>
-         <button>
-            <Link to={config.routes.database}>New database</Link>
-         </button>
+         {user?.email ? <p>You are loged as {user?.email}</p> : <p>You are logged as Guest</p>}
+         <Button primary to={config.routes.database}>
+            New database
+         </Button>
       </div>
    );
 }
