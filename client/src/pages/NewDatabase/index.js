@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
-import Table from '~/components/Table';
 import TableWithInput from '~/components/TableWithInput';
+import TableWithSchema from '~/components/TableWithSchema';
 import TableWithSelect from '~/components/TableWithSelect';
 import styles from './NewDatabase.module.scss';
 
@@ -13,7 +13,7 @@ function NewDatabase({ id }) {
             <p className={cx('title')}>Create new database</p>
             <TableWithInput title="📝 Database name" textInput="Database name" />
             <TableWithSelect title="🔌 Database type" options={['SQL', 'MySQL', 'NoSQL']} />
-            <Table title="🗃️ Database schema" body={<div>Name</div>} />
+            <TableWithSchema title="🗃️ Database schema" />
          </center>
       </div>
    );

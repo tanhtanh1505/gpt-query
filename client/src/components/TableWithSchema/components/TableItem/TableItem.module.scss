@@ -1,0 +1,27 @@
+.wrapper {
+   display: flex;
+   border-top: 1px solid #e0e0e0;
+   &:first-child {
+      border-top: none;
+   }
+   min-height: 40px;
+}
+
+.name-table {
+   border-right: 1px solid #e0e0e0;
+   padding: 8px;
+   flex: 1;
+}
+
+.list-columns {
+   display: flex;
+   flex-direction: column;
+   flex: 2;
+}
+
+.column {
+   display: flex;
+   justify-content: space-between;
+   padding: 8px;
+   min-height: 40px;
+}
