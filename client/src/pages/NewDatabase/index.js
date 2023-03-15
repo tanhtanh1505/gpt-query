@@ -1,9 +1,11 @@
 import classNames from 'classnames/bind';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from '~/components/Button';
 import TableWithInput from '~/components/TableWithInput';
 import TableWithSchema from '~/components/TableWithSchema';
 import TableWithSelect from '~/components/TableWithSelect';
+import config from '~/config';
 import styles from './NewDatabase.module.scss';
 
 const cx = classNames.bind(styles);
@@ -12,6 +14,7 @@ function NewDatabase() {
    const [dbName, setDbName] = useState('');
    const [dbType, setDbType] = useState('');
    const [dbSchema, setDbSchema] = useState([]);
+   let navigate = useNavigate();
 
    const handleChangeDbName = (dbName) => {
       setDbName(dbName);
@@ -42,6 +45,10 @@ function NewDatabase() {
       console.log(dbSchema);
    };
 
+   const handleCancel = () => {
+      navigate(config.routes.home);
+   };
+
    return (
       <div className={cx('wrapper')}>
          <center>
@@ -55,7 +62,9 @@ function NewDatabase() {
             <TableWithSchema title="🗃️ Database schema" onChange={handleChangeDbSchema} />
 
             <div className={cx('action-buttons')}>
-               <Button outline>Cancel</Button>
+               <Button outline onClick={handleCancel}>
+                  Cancel
+               </Button>
                <Button primary onClick={handleSubmit}>
                   Create database
                </Button>
