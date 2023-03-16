@@ -113,7 +113,9 @@ function Database() {
                   </Button>
                </div>
                <TableWithSelect value={dbType} options={dbTypes} onChange={handleChangeDbType} />
-               <TableWithSchema data={dbSchema} onChange={handleChangeDbSchema} />
+               <div className={cx('db-schema')}>
+                  <TableWithSchema data={dbSchema} onChange={handleChangeDbSchema} />
+               </div>
                <TableWithInput
                   title="⌨ Prompt (ctrl + Enter to submit)"
                   textArea="Write your prompt. Ex: Which supplier sold more products in the current year?"

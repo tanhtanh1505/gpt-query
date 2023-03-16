@@ -1,5 +1,7 @@
 const Database = require("../models/database");
 const Query = require("../models/query");
+const { formQuery } = require("../utils/formQuery");
+const { getSolution } = require("../services/chatgpt");
 
 module.exports.getAll = async (req, res) => {
   const databases = await Database.find({ author: req.user._id });
@@ -32,4 +34,20 @@ module.exports.remove = async (req, res) => {
   await Query.deleteMany({ author: id });
 
   res.status(200).json({ message: "Database deleted successfully" });
+};
+
+module.exports.query = async (req, res) => {
+  const { id } = req.params;
+  const query = req.query.q;
+
+  const database = await Database.findById(id);
+  const finalQuery = formQuery(query, database.type, database.schema);
+  const answer = await getSolution(finalQuery);
+  console.log(finalQuery);
+  console.log(answer);
+
+  //save to database
+  await Query.create({ question: finalQuery, answer, author: id });
+
+  res.status(200).json({ answer });
 };
