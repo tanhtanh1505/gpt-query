@@ -7,13 +7,15 @@ import TableWithSchema from '~/components/TableWithSchema';
 import TableWithSelect from '~/components/TableWithSelect';
 import config from '~/config';
 import styles from './NewDatabase.module.scss';
+import axios from 'axios';
 
 const cx = classNames.bind(styles);
 
 function NewDatabase() {
    const [dbName, setDbName] = useState('');
-   const [dbType, setDbType] = useState('');
+   const [dbType, setDbType] = useState('SQL');
    const [dbSchema, setDbSchema] = useState([]);
+
    let navigate = useNavigate();
 
    const handleChangeDbName = (dbName) => {
@@ -43,6 +45,36 @@ function NewDatabase() {
       console.log(dbName);
       console.log(dbType);
       console.log(dbSchema);
+
+      if (!dbName || !dbType || !dbSchema) return alert('Please fill all the fields!');
+
+      if (dbSchema.length === 0) return alert('Please add at least one schema!');
+
+      if (dbSchema.some((e) => e.columns.length === 0)) return alert('Please add at least one column in each schema!');
+
+      const user = JSON.parse(localStorage.getItem('user'));
+      const token = user.token;
+
+      if (token) {
+         const data = {
+            name: dbName,
+            type: dbType,
+            schema: dbSchema,
+         };
+         axios
+            .post(config.api.url + '/database/create', data, {
+               headers: {
+                  Authorization: `Bearer ${token}`,
+               },
+            })
+            .then((res) => {
+               console.log(res);
+               navigate(config.routes.home);
+            })
+            .catch((err) => {
+               console.log(err);
+            });
+      }
    };
 
    const handleCancel = () => {

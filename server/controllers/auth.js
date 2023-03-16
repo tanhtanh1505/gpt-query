@@ -1,6 +1,6 @@
 const { OAuth2Client } = require("google-auth-library");
 const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+const User = require("../models/user");
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
@@ -29,6 +29,7 @@ module.exports.login = async (req, res) => {
       const profile = verificationResponse?.payload;
 
       const existsInDB = await User.findOne({ email: profile?.email });
+      let userId = "";
 
       if (!existsInDB) {
         const user = new User({
@@ -41,6 +42,9 @@ module.exports.login = async (req, res) => {
         });
 
         await user.save();
+        userId = user._id;
+      } else {
+        userId = existsInDB._id;
       }
 
       res.status(201).json({
@@ -50,8 +54,8 @@ module.exports.login = async (req, res) => {
           lastName: profile?.family_name,
           picture: profile?.picture,
           email: profile?.email,
-          token: jwt.sign({ email: profile?.email }, process.env.JWT_SECRET, {
-            expiresIn: "1d",
+          token: jwt.sign({ id: userId }, process.env.JWT_SECRET, {
+            expiresIn: "365d",
           }),
         },
       });

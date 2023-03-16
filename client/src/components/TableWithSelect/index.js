@@ -14,7 +14,7 @@ function TableWithSelect({ icon, title, options, onChange }) {
    return (
       <Table icon={icon} title={title}>
          <center className={cx('wrapper')}>
-            <select className={cx('options')} onChange={onOptionChangeHandler}>
+            <select className={cx('options')} onChange={onOptionChangeHandler} defaultValue={options[0]}>
                {options.map((option, index) => {
                   return <option key={index}>{option}</option>;
                })}

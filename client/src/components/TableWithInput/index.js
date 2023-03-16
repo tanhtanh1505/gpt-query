@@ -1,16 +1,12 @@
 import classNames from 'classnames/bind';
-import { useState } from 'react';
 import Table from '../Table';
 import styles from './TableWithInput.module.scss';
 
 const cx = classNames.bind(styles);
 
 function TableWithInput({ icon, title, textInput, onChange }) {
-   const [dbName, setDbName] = useState();
-
    const handleChangeDbName = (event) => {
-      setDbName(event.target.value);
-      onChange(dbName);
+      onChange(event.target.value);
    };
    return (
       <Table icon={icon} title={title}>
