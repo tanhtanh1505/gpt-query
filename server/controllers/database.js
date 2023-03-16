@@ -36,6 +36,13 @@ module.exports.remove = async (req, res) => {
   res.status(200).json({ message: "Database deleted successfully" });
 };
 
+module.exports.getAllQuery = async (req, res) => {
+  const { id } = req.params;
+
+  const queries = await Query.find({ author: id });
+  res.status(200).json({ queries });
+};
+
 module.exports.query = async (req, res) => {
   const { id } = req.params;
   const query = req.query.q;
