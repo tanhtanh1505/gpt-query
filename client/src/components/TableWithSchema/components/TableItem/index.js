@@ -1,22 +1,20 @@
 import classNames from 'classnames/bind';
 import styles from './TableItem.module.scss';
-import { useState } from 'react';
 
 const cx = classNames.bind(styles);
 
-function TableItem({ updateData }) {
-   const [tableName, setTableName] = useState();
-   const [columns, setColumns] = useState([]);
+function TableItem({ name, cols, updateData }) {
+   let tableName = name;
+   let columns = cols;
 
    const addColumn = () => {
-      setColumns([...columns, { name: '', type: '' }]);
+      columns.push({ name: '', type: '' });
    };
 
    const removeEmptyColumns = (index) => {
       // remove empty columns except last
       if (index !== columns.length - 1 && columns[index].name === '') {
          columns.splice(index, 1);
-         setColumns([...columns]);
          updateData({ name: tableName, columns: columns });
       }
    };
@@ -25,14 +23,14 @@ function TableItem({ updateData }) {
       columns[index].name = event.target.value;
       if (index === columns.length - 1) {
          addColumn();
-      } else setColumns([...columns]);
+      }
       updateData({ name: tableName, columns: columns });
    };
 
    const handleChangeTableName = (event) => {
-      setTableName(event.target.value);
+      tableName = event.target.value;
+      if (columns.length < 1) addColumn();
       updateData({ name: tableName, columns: columns });
-      if (columns.length < 1) setColumns([{ name: '', type: '' }]);
    };
 
    return (

@@ -27,17 +27,7 @@ function NewDatabase() {
    };
 
    const handleChangeDbSchema = (dbSchema) => {
-      if (dbSchema) {
-         const tempDbSchema = [];
-         for (let i = 0; i < dbSchema.length; i++) {
-            const schema = dbSchema[i];
-            if (!schema.name || schema.name === '') continue;
-            const tempCols = schema.columns.filter((e) => e.name && e.name !== '');
-            schema.columns = tempCols;
-            tempDbSchema.push(schema);
-         }
-         setDbSchema(tempDbSchema);
-      }
+      setDbSchema(dbSchema);
    };
 
    const handleSubmit = () => {
@@ -48,9 +38,21 @@ function NewDatabase() {
 
       if (!dbName || !dbType || !dbSchema) return alert('Please fill all the fields!');
 
-      if (dbSchema.length === 0) return alert('Please add at least one schema!');
+      const tempDbSchema = [];
+      if (dbSchema) {
+         for (let i = 0; i < dbSchema.length; i++) {
+            const schema = dbSchema[i];
+            if (!schema.name || schema.name === '') continue;
+            const tempCols = schema.columns.filter((e) => e.name && e.name !== '');
+            schema.columns = tempCols;
+            tempDbSchema.push(schema);
+         }
+      }
 
-      if (dbSchema.some((e) => e.columns.length === 0)) return alert('Please add at least one column in each schema!');
+      if (tempDbSchema.length === 0) return alert('Please add at least one schema!');
+
+      if (tempDbSchema.some((e) => e.columns.length === 0))
+         return alert('Please add at least one column in each schema!');
 
       const user = JSON.parse(localStorage.getItem('user'));
       const token = user.token;
@@ -59,7 +61,7 @@ function NewDatabase() {
          const data = {
             name: dbName,
             type: dbType,
-            schema: dbSchema,
+            schema: tempDbSchema,
          };
          axios
             .post(config.api.url + '/database/create', data, {
@@ -91,7 +93,7 @@ function NewDatabase() {
                options={['SQL', 'MySQL', 'NoSQL']}
                onChange={handleChangeDbType}
             />
-            <TableWithSchema title="🗃️ Database schema" onChange={handleChangeDbSchema} />
+            <TableWithSchema title="🗃️ Database schema" onChange={handleChangeDbSchema} data={dbSchema} />
 
             <div className={cx('action-buttons')}>
                <Button outline onClick={handleCancel}>

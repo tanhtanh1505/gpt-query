@@ -1,5 +1,21 @@
-const User = require("../models/user");
 const Database = require("../models/database");
+
+module.exports.getAll = async (req, res) => {
+  const databases = await Database.find({ author: req.user._id });
+  res.status(200).json({ databases });
+};
+
+module.exports.getName = async (req, res) => {
+  // get name and id
+  const databases = await Database.find({ author: req.user._id }, { name: 1, _id: 1 });
+  res.status(200).json({ databases });
+};
+
+module.exports.get = async (req, res) => {
+  const { id } = req.params;
+  const database = await Database.findById(id);
+  res.status(200).json({ database });
+};
 
 module.exports.create = async (req, res) => {
   const { name, type, schema } = req.body;

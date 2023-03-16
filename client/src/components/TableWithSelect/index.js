@@ -4,19 +4,23 @@ import styles from './TableWithSelect.module.scss';
 
 const cx = classNames.bind(styles);
 
-function TableWithSelect({ icon, title, options, onChange }) {
+function TableWithSelect({ icon, title, value, options, onChange }) {
    //const options = ['One', 'Two', 'Three', 'Four', 'Five'];
    const onOptionChangeHandler = (event) => {
       console.log('User Selected Value - ', event.target.value);
-      onChange(event.target.value);
+      if (onChange) onChange(event.target.value);
    };
 
    return (
-      <Table icon={icon} title={title}>
+      <Table icon={icon} title={title ? title : '🔌 Database type'}>
          <center className={cx('wrapper')}>
-            <select className={cx('options')} onChange={onOptionChangeHandler} defaultValue={options[0]}>
+            <select className={cx('options')} onChange={onOptionChangeHandler} defaultValue={value ?? options[0]}>
                {options.map((option, index) => {
-                  return <option key={index}>{option}</option>;
+                  return (
+                     <option key={index} selected={option === value}>
+                        {option}
+                     </option>
+                  );
                })}
             </select>
          </center>
