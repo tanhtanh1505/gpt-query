@@ -8,7 +8,7 @@ module.exports.getAll = async (req, res) => {
 
 module.exports.getName = async (req, res) => {
   // get name and id
-  const databases = await Database.find({ author: req.user._id }, { name: 1, _id: 1 });
+  const databases = await Database.find({ author: req.user._id }, { name: 1, _id: 1, type: 1 });
   res.status(200).json({ databases });
 };
 
