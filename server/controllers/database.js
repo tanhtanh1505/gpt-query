@@ -1,4 +1,5 @@
 const Database = require("../models/database");
+const Query = require("../models/query");
 
 module.exports.getAll = async (req, res) => {
   const databases = await Database.find({ author: req.user._id });

@@ -12,4 +12,4 @@ const QuerySchema = Schema({
   },
 });
 
-module.exports = mongoose.model("Database", QuerySchema);
+module.exports = mongoose.model("Query", QuerySchema);
