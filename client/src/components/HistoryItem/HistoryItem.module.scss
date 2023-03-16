@@ -4,8 +4,10 @@
    border-radius: 8px;
    background-color: var(--gray-light);
    max-width: 800px;
+   min-width: 400px;
    margin-top: 8px;
    padding: 6px 16px;
+   text-align: start;
    width: auto;
 
    &:hover {
@@ -14,10 +16,10 @@
 }
 
 .header {
-   font-weight: 800;
-   font-size: 2.2rem;
+   font-weight: 600;
+   font-size: 1.6rem;
 }
 
 .body {
-   font-size: 1.5rem;
+   font-size: 1.4rem;
 }

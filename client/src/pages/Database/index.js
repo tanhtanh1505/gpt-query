@@ -13,6 +13,7 @@ import swal from 'sweetalert';
 import TableWithInput from '~/components/TableWithInput';
 import QueryAnswer from '~/components/QueryAnswer';
 import Popup from 'reactjs-popup';
+import HistoryItem from '~/components/HistoryItem';
 
 const cx = classNames.bind(styles);
 
@@ -22,6 +23,7 @@ function Database() {
    const [dbType, setDbType] = useState();
    const [dbSchema, setDbSchema] = useState();
    const [query, setQuery] = useState('');
+   const [history, setHistory] = useState([]);
    const [result, setResult] = useState('');
    const [openAnswer, setOpenAnswer] = useState(false);
 
@@ -39,6 +41,7 @@ function Database() {
                setDbName(database.name);
                setDbType(database.type);
                setDbSchema(database.schema);
+               setHistory(database.queries);
             });
       } else {
          // get databases in local storage
@@ -138,6 +141,10 @@ function Database() {
    };
 
    const closeModal = () => setOpenAnswer(false);
+   const openModalWithContent = (content) => {
+      setOpenAnswer(true);
+      setResult(content);
+   };
 
    return (
       <>
@@ -167,6 +174,20 @@ function Database() {
                         Submit
                      </Button>
                   </div>
+
+                  <h2 className={cx('title')}>History</h2>
+                  {history &&
+                     history.length > 0 &&
+                     history.map((query, index) => (
+                        <HistoryItem
+                           query={query.question}
+                           answer={query.answer}
+                           inputTokens={query.question.length}
+                           outputTokens={query.answer.length}
+                           key={index}
+                           openAnswer={openModalWithContent}
+                        />
+                     ))}
                </div>
             </center>
 

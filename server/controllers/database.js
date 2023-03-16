@@ -17,7 +17,11 @@ module.exports.getName = async (req, res) => {
 module.exports.get = async (req, res) => {
   const { id } = req.params;
   const database = await Database.findById(id);
-  res.status(200).json({ database });
+
+  const queries = await Query.find({ author: id });
+  const combine = { ...database._doc, queries };
+
+  res.status(200).json({ database: combine });
 };
 
 module.exports.create = async (req, res) => {
@@ -50,11 +54,9 @@ module.exports.query = async (req, res) => {
   const database = await Database.findById(id);
   const finalQuery = formQuery(query, database.type, database.schema);
   const answer = await getSolution(finalQuery);
-  console.log(finalQuery);
-  console.log(answer);
 
   //save to database
-  await Query.create({ question: finalQuery, answer, author: id });
+  await Query.create({ question: query, answer, author: id });
 
   res.status(200).json({ answer });
 };

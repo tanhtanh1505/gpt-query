@@ -1,19 +1,24 @@
 import classNames from 'classnames/bind';
-import { Link } from 'react-router-dom';
 import styles from './HistoryItem.module.scss';
 
 const cx = classNames.bind(styles);
 
-function HistoryItem({ query, inputTokens, outputTokens, to }) {
+function HistoryItem({ query, answer, inputTokens, outputTokens, openAnswer }) {
+   const maxQueryLength = 60;
+
+   const handleOpenAnswer = () => {
+      openAnswer(answer);
+   };
+
    return (
-      <Link to={to}>
-         <div className={cx('wrapper')}>
-            <div className={cx('header')}>{query}</div>
-            <div className={cx('body')}>
-               Input token: {inputTokens}, Output token: {outputTokens}
-            </div>
+      <div className={cx('wrapper')} onClick={handleOpenAnswer}>
+         <div className={cx('header')}>
+            {query.length > maxQueryLength ? `${query.slice(0, maxQueryLength)}...` : query}
          </div>
-      </Link>
+         <div className={cx('body')}>
+            Input token: {inputTokens}, Output token: {outputTokens}
+         </div>
+      </div>
    );
 }
 

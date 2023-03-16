@@ -8,7 +8,6 @@ const cx = classNames.bind(styles);
 
 function QueryAnswer({ id, body }) {
    useEffect(() => {
-      console.log(id);
       //if id, get data from server
       const theUser = localStorage.getItem('user');
 
@@ -25,7 +24,7 @@ function QueryAnswer({ id, body }) {
 
    return (
       <div className={cx('wrapper')}>
-         <div className={cx('body')}>{body}</div>
+         <p className={cx('body')}>{body}</p>
       </div>
    );
 }
