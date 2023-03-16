@@ -27,6 +27,10 @@ function Sidebar() {
             .then((res) => {
                setDatabases(res.data.databases);
             });
+      } else {
+         // get databases in local storage
+         const dbs = localStorage.getItem('databases');
+         if (dbs) setDatabases(JSON.parse(dbs));
       }
    }, []);
 
@@ -42,9 +46,10 @@ function Sidebar() {
             <MenuItem title="Contacts" to={config.routes.contacts} />
             <MenuItem title={user?.email ? 'Logout' : 'Login'} onClick={logout} to={config.routes.login} />
             <p className={cx('title')}>Databases</p>
-            {databases.map((db) => (
-               <MenuItem key={db._id} title={db.name} to={`${config.routes.database}/${db._id}`} />
-            ))}
+            {databases &&
+               databases.map((db) => (
+                  <MenuItem key={db._id} title={db.name} to={`${config.routes.database}/${db._id}`} />
+               ))}
 
             <p className={cx('title')}>Social links</p>
             <MenuItem title="Facebook" to={config.routes.socials} icon={<FontAwesomeIcon icon={faHome} />} />

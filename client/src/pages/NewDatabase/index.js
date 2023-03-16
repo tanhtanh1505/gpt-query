@@ -8,6 +8,7 @@ import TableWithSelect from '~/components/TableWithSelect';
 import config from '~/config';
 import styles from './NewDatabase.module.scss';
 import axios from 'axios';
+import { v4 as uuid } from 'uuid';
 
 const cx = classNames.bind(styles);
 
@@ -55,9 +56,10 @@ function NewDatabase() {
          return alert('Please add at least one column in each schema!');
 
       const user = JSON.parse(localStorage.getItem('user'));
-      const token = user.token;
+      const token = user?.token;
 
       if (token) {
+         //save to database
          const data = {
             name: dbName,
             type: dbType,
@@ -71,11 +73,25 @@ function NewDatabase() {
             })
             .then((res) => {
                console.log(res);
-               navigate(config.routes.home);
+               navigate(`${config.routes.database}/${res.data.database._id}`);
             })
             .catch((err) => {
                console.log(err);
             });
+      } else {
+         //save to local storage
+         const databases = JSON.parse(localStorage.getItem('databases')) || [];
+         const unique_id = uuid();
+         const newDatabase = {
+            _id: unique_id,
+            name: dbName,
+            type: dbType,
+            schema: tempDbSchema,
+         };
+         databases.push(newDatabase);
+
+         localStorage.setItem('databases', JSON.stringify(databases));
+         navigate(`${config.routes.database}/${newDatabase._id}`);
       }
    };
 

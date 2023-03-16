@@ -30,6 +30,16 @@ function Database() {
                setDbType(database.type);
                setDbSchema(database.schema);
             });
+      } else {
+         // get databases in local storage
+         const dbs = localStorage.getItem('databases');
+         if (dbs) {
+            const databases = JSON.parse(dbs);
+            const database = databases.find((db) => db._id === id);
+            setDbName(database.name);
+            setDbType(database.type);
+            setDbSchema(database.schema);
+         }
       }
    }, [id]);
 
@@ -37,9 +47,9 @@ function Database() {
    //    setDbName(event.target.value);
    // };
 
-   // const handleChangeDbType = (event) => {
-   //    setDbType(event.target.value);
-   // };
+   const handleChangeDbType = (value) => {
+      setDbType(value);
+   };
 
    const handleChangeDbSchema = (dbSchema) => {
       setDbSchema(dbSchema);
@@ -53,7 +63,7 @@ function Database() {
                <Button outline>Delete</Button>
                <Button to={config.routes.home}>Close</Button>
             </div>
-            <TableWithSelect value={dbType} options={dbTypes} />
+            <TableWithSelect value={dbType} options={dbTypes} onChange={handleChangeDbType} />
             <TableWithSchema data={dbSchema} onChange={handleChangeDbSchema} />
          </div>
       </>
