@@ -5,12 +5,14 @@ import styles from './Home.module.scss';
 import Button from '~/components/Button';
 import axios from 'axios';
 import DatabaseItem from '~/components/DatabaseItem';
+import HistoryItem from '~/components/HistoryItem';
 
 const cx = classNames.bind(styles);
 
 function Home() {
    const [user, setUser] = useState();
    const [databases, setDatabases] = useState([]);
+   const [history, setHistory] = useState([]);
 
    useEffect(() => {
       const theUser = localStorage.getItem('user');
@@ -18,13 +20,21 @@ function Home() {
          setUser(JSON.parse(theUser));
 
          axios
-            .get(`${config.api.url}/database/name`, {
+            .get(`${config.api.url}/database`, {
                headers: {
                   Authorization: `Bearer ${JSON.parse(theUser).token}`,
                },
             })
             .then((res) => {
                setDatabases(res.data.databases);
+
+               const tempHistory = [];
+               res.data.databases.forEach((db) => {
+                  if (db.queries && db.queries.length > 0) {
+                     tempHistory.push(...db.queries);
+                  }
+               });
+               setHistory(tempHistory);
             });
       } else {
          // get databases in local storage
@@ -46,7 +56,13 @@ function Home() {
          <h2 className={cx('databases')}>Databases</h2>
          {databases &&
             databases.map((db) => (
-               <DatabaseItem key={db._id} name={db.name} type={db.type} to={`${config.routes.database}/${db._id}`} />
+               <DatabaseItem
+                  key={db._id}
+                  name={db.name}
+                  type={db.type}
+                  time={db.queries.length}
+                  to={`${config.routes.database}/${db._id}`}
+               />
             ))}
 
          <div className={cx('new-btn')}>
@@ -55,6 +71,18 @@ function Home() {
             </Button>
          </div>
          <h2 className={cx('history')}>History</h2>
+         {history &&
+            history.length > 0 &&
+            history.map((query, index) => (
+               <HistoryItem
+                  query={query.question}
+                  answer={query.answer}
+                  inputTokens={query.question.length}
+                  outputTokens={query.answer.length}
+                  key={index}
+                  author={query.author}
+               />
+            ))}
       </div>
    );
 }

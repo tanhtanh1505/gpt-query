@@ -122,17 +122,14 @@ function Database() {
             return;
          }
 
-         setResult('Loading...');
-         setOpenAnswer(true);
-
-         // axios
-         //    .get(`${config.api.url}/database/${id}/query?q=${query}`, {
-         //       headers: { Authorization: `Bearer ${JSON.parse(theUser).token}` },
-         //    })
-         //    .then((res) => {
-         //       console.log(res.data.answer);
-         //       setResult(res.data.answer);
-         //    });
+         axios
+            .get(`${config.api.url}/database/${id}/query?q=${query}`, {
+               headers: { Authorization: `Bearer ${JSON.parse(theUser).token}` },
+            })
+            .then((res) => {
+               setResult(res.data.answer);
+               setOpenAnswer(true);
+            });
       } else {
          swal('You need to login to use this feature!', {
             icon: 'warning',

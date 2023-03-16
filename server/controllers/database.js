@@ -5,7 +5,13 @@ const { getSolution } = require("../services/chatgpt");
 
 module.exports.getAll = async (req, res) => {
   const databases = await Database.find({ author: req.user._id });
-  res.status(200).json({ databases });
+  const combine = [];
+  for (let i = 0; i < databases.length; i++) {
+    const queries = await Query.find({ author: databases[i]._id });
+    combine.push({ ...databases[i]._doc, queries: queries });
+  }
+
+  res.status(200).json({ databases: combine });
 };
 
 module.exports.getName = async (req, res) => {

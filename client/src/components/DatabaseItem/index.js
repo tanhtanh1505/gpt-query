@@ -10,7 +10,7 @@ function DatabaseItem({ name, type, time, to }) {
          <div className={cx('wrapper')}>
             <div className={cx('header')}>{name}</div>
             <div className={cx('body')}>
-               {type} {time ?? `,${time}`}
+               {type}, {time} queries
             </div>
          </div>
       </Link>
