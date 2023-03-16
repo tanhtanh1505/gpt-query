@@ -9,6 +9,7 @@ import config from '~/config';
 import styles from './NewDatabase.module.scss';
 import axios from 'axios';
 import { v4 as uuid } from 'uuid';
+import { dbTypes } from '~/utils/types/dbTypes';
 
 const cx = classNames.bind(styles);
 
@@ -104,11 +105,7 @@ function NewDatabase() {
          <center>
             <p className={cx('title')}>Create new database</p>
             <TableWithInput title="📝 Database name" textInput="Database name" onChange={handleChangeDbName} />
-            <TableWithSelect
-               title="🔌 Database type"
-               options={['SQL', 'MySQL', 'NoSQL']}
-               onChange={handleChangeDbType}
-            />
+            <TableWithSelect title="🔌 Database type" options={dbTypes} onChange={handleChangeDbType} />
             <TableWithSchema title="🗃️ Database schema" onChange={handleChangeDbSchema} data={dbSchema} />
 
             <div className={cx('action-buttons')}>

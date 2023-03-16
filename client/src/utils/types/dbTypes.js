@@ -1,1 +1,1 @@
-export const dbTypes = ['SQL', 'MySQL', 'NoSQL'];
+export const dbTypes = ['MySQL', 'MongoDB', 'PostgreSQL', 'Oracle', 'MariaDB'];
