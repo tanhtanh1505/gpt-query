@@ -30,4 +30,17 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
+// create permission for user
+UserSchema.post("save", async function (doc, next) {
+  try {
+    const Permission = require("./permission");
+    const permission = await Permission.create({
+      user: doc._id,
+    });
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = mongoose.model("User", UserSchema);

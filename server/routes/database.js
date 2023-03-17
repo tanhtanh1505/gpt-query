@@ -3,6 +3,8 @@ const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
 const { getAll, getName, get, create, remove, getAllQuery, query } = require("../controllers/database");
 const { verifyToken } = require("../middlewares/jwt");
+const { hasPermission } = require("../middlewares/permisson");
+
 const { validateCreateDatabase } = require("../middlewares/validate/database");
 
 router.use(verifyToken);
@@ -14,6 +16,6 @@ router.post("/create", validateCreateDatabase, catchAsync(create));
 router.delete("/remove/:id", catchAsync(remove));
 router.get("/:id", catchAsync(get));
 router.get("/:id/all-query", catchAsync(getAllQuery));
-router.get("/:id/query", catchAsync(query));
+router.get("/:id/query", hasPermission, catchAsync(query));
 
 module.exports = router;

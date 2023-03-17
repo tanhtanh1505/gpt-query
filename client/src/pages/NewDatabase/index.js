@@ -15,7 +15,7 @@ const cx = classNames.bind(styles);
 
 function NewDatabase() {
    const [dbName, setDbName] = useState('');
-   const [dbType, setDbType] = useState('SQL');
+   const [dbType, setDbType] = useState('MySQL');
    const [dbSchema, setDbSchema] = useState([]);
 
    let navigate = useNavigate();
@@ -105,7 +105,7 @@ function NewDatabase() {
          <center>
             <p className={cx('title')}>Create new database</p>
             <TableWithInput title="📝 Database name" textInput="Database name" onChange={handleChangeDbName} />
-            <TableWithSelect title="🔌 Database type" options={dbTypes} onChange={handleChangeDbType} />
+            <TableWithSelect title="🔌 Database type" options={dbTypes} onChange={handleChangeDbType} value={dbType} />
             <TableWithSchema title="🗃️ Database schema" onChange={handleChangeDbSchema} data={dbSchema} />
 
             <div className={cx('action-buttons')}>

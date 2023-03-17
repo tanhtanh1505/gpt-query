@@ -26,6 +26,7 @@ function Database() {
    const [history, setHistory] = useState([]);
    const [result, setResult] = useState('');
    const [openAnswer, setOpenAnswer] = useState(false);
+   const [loading, setLoading] = useState(false);
 
    const navigate = useNavigate();
 
@@ -112,8 +113,11 @@ function Database() {
       }
    };
 
-   const handleSubmit = () => {
+   const handleSubmit = async () => {
+      if (loading) return;
+
       const theUser = localStorage.getItem('user');
+
       if (theUser && !theUser.includes('undefined')) {
          if (query === '') {
             swal('You need to write a query!', {
@@ -121,15 +125,21 @@ function Database() {
             });
             return;
          }
-
-         axios
-            .get(`${config.api.url}/database/${id}/query?q=${query}`, {
+         setLoading(true);
+         try {
+            const res = await axios.get(`${config.api.url}/database/${id}/query?q=${query}`, {
                headers: { Authorization: `Bearer ${JSON.parse(theUser).token}` },
-            })
-            .then((res) => {
-               setResult(res.data.answer);
-               setOpenAnswer(true);
             });
+            setResult(res.data.answer);
+            setOpenAnswer(true);
+
+            setLoading(false);
+         } catch (err) {
+            setLoading(false);
+            swal(JSON.parse(err.request.response).message, {
+               icon: 'error',
+            });
+         }
       } else {
          swal('You need to login to use this feature!', {
             icon: 'warning',
@@ -188,8 +198,8 @@ function Database() {
                </div>
             </center>
 
-            <Popup open={openAnswer} closeOnDocumentClick onClose={closeModal}>
-               <QueryAnswer body={result} title="Answer" />
+            <Popup open={openAnswer || loading} closeOnDocumentClick onClose={closeModal}>
+               <QueryAnswer body={result} title="Answer" loading={loading} />
             </Popup>
          </div>
       </>

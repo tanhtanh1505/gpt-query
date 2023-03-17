@@ -6,7 +6,7 @@ import styles from './QueryAnswer.module.scss';
 
 const cx = classNames.bind(styles);
 
-function QueryAnswer({ id, body }) {
+function QueryAnswer({ id, body, loading }) {
    useEffect(() => {
       //if id, get data from server
       const theUser = localStorage.getItem('user');
@@ -24,7 +24,7 @@ function QueryAnswer({ id, body }) {
 
    return (
       <div className={cx('wrapper')}>
-         <p className={cx('body')}>{body}</p>
+         <p className={cx('body')}>{loading ? 'Please wait...' : body}</p>
       </div>
    );
 }

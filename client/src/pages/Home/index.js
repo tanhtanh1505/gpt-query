@@ -60,7 +60,7 @@ function Home() {
                   key={db._id}
                   name={db.name}
                   type={db.type}
-                  time={db.queries.length}
+                  time={db.queries?.length}
                   to={`${config.routes.database}/${db._id}`}
                />
             ))}
