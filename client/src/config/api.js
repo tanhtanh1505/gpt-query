@@ -1,5 +1,5 @@
 const api = {
-   url: 'http://localhost:8080/api',
+   url: 'https://gpt.tanhuet.site/api',
 };
 
 export default api;

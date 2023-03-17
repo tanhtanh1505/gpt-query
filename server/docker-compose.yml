@@ -1,0 +1,13 @@
+version: '3.3'
+services:
+  prod:
+    container_name: gpt_query_prod
+    image: gpt-query-prod:1.0.0
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - ${PORT}:${PORT}
+    volumes:
+      - ${PWD}/.env:/src/.env
+    restart: unless-stopped
