@@ -41,9 +41,6 @@ module.exports.create = async (req, res) => {
 
 module.exports.importDb = async (req, res) => {
   const { name, type, url } = req.body;
-  console.log(name, type, url);
-  console.log(req.file);
-
   if (url && url.length > 0) {
     if (type != dbTypes.MongoDB) {
       return res.status(400).json({ message: "Only MongoDB is supported for now" });
@@ -57,9 +54,10 @@ module.exports.importDb = async (req, res) => {
     await database.save();
     return res.status(201).json({ message: "Database created successfully", database: database });
   } else if (req.file) {
+    console.log(req.file);
   }
 
-  return res.status(400).json({ message: "Invalid URL" });
+  return res.status(400).json({ message: "Error exist" });
 };
 
 module.exports.remove = async (req, res) => {
