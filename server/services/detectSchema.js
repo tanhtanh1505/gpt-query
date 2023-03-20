@@ -1,10 +1,10 @@
-const mongoose = require("mongoose");
-//const { formQuery } = require("../utils/formQuery");
+const { MongoClient } = require("mongodb");
 
 module.exports.getMongoDBSchema = async (uri) => {
+  const client = await MongoClient.connect(uri, { useUnifiedTopology: true });
   try {
-    await mongoose.connect(uri);
-    const collections = await mongoose.connection.db.collections();
+    const db = client.db();
+    const collections = await db.collections();
     const schema = [];
 
     for (let collection of collections) {
@@ -30,8 +30,6 @@ module.exports.getMongoDBSchema = async (uri) => {
     console.error(err);
     return null;
   } finally {
-    mongoose.disconnect();
+    await client.close();
   }
 };
-
-//this.getMongoDBSchema("mongodb://localhost:27017/roofy").then((r) => console.log(formQuery("", "", r)));

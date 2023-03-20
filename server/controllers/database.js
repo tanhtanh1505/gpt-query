@@ -2,6 +2,8 @@ const Database = require("../models/database");
 const Query = require("../models/query");
 const { formQuery } = require("../utils/formQuery");
 const { getSolution } = require("../services/chatgpt");
+const { getMongoDBSchema } = require("../services/detectSchema");
+const dbTypes = require("../constants/dbTypes");
 
 module.exports.getAll = async (req, res) => {
   const databases = await Database.find({ author: req.user._id });
@@ -35,6 +37,29 @@ module.exports.create = async (req, res) => {
   const database = new Database({ name, type, schema, author: req.user._id });
   await database.save();
   res.status(201).json({ message: "Database created successfully", database: database });
+};
+
+module.exports.importDb = async (req, res) => {
+  const { name, type, url } = req.body;
+  console.log(name, type, url);
+  console.log(req.file);
+
+  if (url && url.length > 0) {
+    if (type != dbTypes.MongoDB) {
+      return res.status(400).json({ message: "Only MongoDB is supported for now" });
+    }
+    if (!url.startsWith("mongodb")) {
+      return res.status(400).json({ message: "Invalid MongoDB URL" });
+    }
+
+    const schema = await getMongoDBSchema(url);
+    const database = new Database({ name, type, schema, author: req.user._id });
+    await database.save();
+    return res.status(201).json({ message: "Database created successfully", database: database });
+  } else if (req.file) {
+  }
+
+  return res.status(400).json({ message: "Invalid URL" });
 };
 
 module.exports.remove = async (req, res) => {

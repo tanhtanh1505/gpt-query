@@ -17,7 +17,7 @@ function ImportDatabase() {
    const [dbName, setDbName] = useState('');
    const [dbType, setDbType] = useState('MySQL');
    const [url, setUrl] = useState('');
-   const [file, setFile] = useState('');
+   const [file, setFile] = useState();
 
    let navigate = useNavigate();
 
@@ -49,14 +49,13 @@ function ImportDatabase() {
       const user = JSON.parse(localStorage.getItem('user'));
       const token = user?.token;
 
-      if (false && token) {
+      if (token) {
          //save to database
-         const data = {
-            name: dbName,
-            type: dbType,
-            url: url,
-            file: file,
-         };
+         const data = new FormData();
+         data.append('name', dbName);
+         data.append('type', dbType);
+         data.append('url', url);
+         data.append('file', file);
 
          axios
             .post(config.api.url + '/database/import', data, {
@@ -66,7 +65,7 @@ function ImportDatabase() {
             })
             .then((res) => {
                console.log(res);
-               // navigate(`${config.routes.database}/${res.data.database._id}`);
+               navigate(`${config.routes.database}/${res.data.database._id}`);
             })
             .catch((err) => {
                console.log(err);
