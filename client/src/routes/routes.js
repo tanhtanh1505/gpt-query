@@ -10,6 +10,7 @@ import Home from '~/pages/Home';
 import Contact from '~/pages/Contact';
 import Database from '~/pages/Database';
 import NewDatabase from '~/pages/NewDatabase';
+import ImportDatabase from '~/pages/ImportDatabase';
 
 // Public routes
 const publicRoutes = [
@@ -18,6 +19,7 @@ const publicRoutes = [
    { path: config.routes.home, component: Home },
    { path: config.routes.contacts, component: Contact },
    { path: config.routes.database, component: NewDatabase },
+   { path: config.routes.importDatabase, component: ImportDatabase },
    { path: `${config.routes.database}/:id`, component: Database },
 ];
 

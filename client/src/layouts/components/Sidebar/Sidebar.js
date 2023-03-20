@@ -1,4 +1,4 @@
-import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames/bind';
 import config from '~/config';
@@ -52,7 +52,11 @@ function Sidebar() {
                ))}
 
             <p className={cx('title')}>Social links</p>
-            <MenuItem title="Facebook" to={config.routes.socials} icon={<FontAwesomeIcon icon={faHome} />} />
+            <MenuItem
+               to="https://www.linkedin.com/in/tuan-anh-694b82239/"
+               title="Tuan Anh"
+               icon={<FontAwesomeIcon icon={faLinkedin} />}
+            />
          </Menu>
       </aside>
    );

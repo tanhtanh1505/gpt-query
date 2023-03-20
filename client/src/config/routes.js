@@ -5,6 +5,7 @@ const routes = {
    home: '/',
    contacts: '/contact',
    database: '/database',
+   importDatabase: '/import-database',
    socials: '/socials',
 };
 

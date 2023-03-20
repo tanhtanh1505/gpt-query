@@ -69,6 +69,9 @@ function Home() {
             <Button outline to={config.routes.database} small>
                New database
             </Button>
+            <Button primary to={config.routes.importDatabase} small>
+               Import database
+            </Button>
          </div>
          <h2 className={cx('history')}>History</h2>
          {history &&
