@@ -68,7 +68,7 @@ function ImportDatabase() {
                navigate(`${config.routes.database}/${res.data.database._id}`);
             })
             .catch((err) => {
-               console.log(err);
+               swal('Error', err.response.data.message, 'error');
             });
       } else {
          swal('Error', 'Please login to use this feature!', 'error');
