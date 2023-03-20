@@ -3,7 +3,9 @@ if [ -f gpt-query-prod.tar ]; then
 fi
 
 cd ../client
+sed -i 's/http:\/\/localhost:8080/https:\/\/gpt.tanhuet.site/g' .env
 npm run build
+sed -i 's/https:\/\/gpt.tanhuet.site/http:\/\/localhost:8080/g' .env
 
 cp -r build ../server/
 
