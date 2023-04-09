@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="file" onchange="readFile(this)" />
+    <script>
+      function removeBrackets(string) {
+        if (string[0] === '`') {
+          string = string.slice(1, string.length - 1)
+        }
+        return string
+      }
+
+      function lastWord(line) {
+        var arr = line.trim().split(" ")
+        return removeBrackets(arr[arr.length - 1])
+      }
+
+      function readFile(input) {
+        let file = input.files[0];
+        let reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload = function () {
+          console.log(reader.result);
+          var database = {};
+          var i = 0;
+          i = reader.result.indexOf('Database:')
+          var j = reader.result.indexOf("\n", i)
+          var databaseName = lastWord(reader.result.slice(i, j))
+          database['name'] = databaseName
+          database['schema'] = [];
+          while (reader.result.indexOf('CREATE TABLE', i) != -1) {
+            let schema = {};
+            j = reader.result.indexOf('(', i);
+            let tableName = lastWord(reader.result.slice(i, j))
+            schema['name'] = tableName;
+            schema['columns'] = [];
+            i = reader.result.indexOf("\n", j) + 1;
+            while (reader.result[i] != ')') {
+              j = reader.result.indexOf("\n", i)
+              let column = {}
+              let arr = reader.result.slice(i, j).trim().split(" ")
+              let columnName = removeBrackets(arr[0])
+              let columnType = arr[1]
+              column['name'] = columnName
+              column['type'] = columnType
+              schema['columns'].push(column)
+              i = j + 1
+            }
+            schema['columns'].length--  
+            database['schema'].push(schema)
+          }
+          console.log(database)
+        };
+        reader.onerror = function () {
+          console.log(reader.error);
+        };
+      }
+    </script>
+  </body>
+</html>

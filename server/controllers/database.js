@@ -3,6 +3,7 @@ const Query = require("../models/query");
 const { formQuery } = require("../utils/formQuery");
 const { getSolution } = require("../services/chatgpt");
 const { getMongoDBSchema } = require("../services/detectSchema");
+const { readSqlFile } = require("../services/convertSql");
 const dbTypes = require("../constants/dbTypes");
 
 module.exports.getAll = async (req, res) => {
@@ -41,6 +42,7 @@ module.exports.create = async (req, res) => {
 
 module.exports.importDb = async (req, res) => {
   const { name, type, url } = req.body;
+
   if (url && url.length > 0) {
     if (type != dbTypes.MongoDB) {
       return res.status(400).json({ message: "Only MongoDB is supported for now" });
@@ -54,7 +56,13 @@ module.exports.importDb = async (req, res) => {
     await database.save();
     return res.status(201).json({ message: "Database created successfully", database: database });
   } else if (req.file) {
-    console.log(req.file);
+    const schema = await readSqlFile(req.file.path);
+    if (type != dbTypes.MySQL) {
+      return res.status(400).json({ message: "Only MySQL is supported for now" });
+    }
+    const database = new Database({ name, type, schema, author: req.user._id });
+    await database.save();
+    return res.status(201).json({ message: "Database created successfully", database: database });
   }
 
   return res.status(400).json({ message: "Error exist" });
