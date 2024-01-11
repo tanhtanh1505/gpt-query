@@ -87,13 +87,14 @@ module.exports.getAllQuery = async (req, res) => {
 module.exports.query = async (req, res) => {
   const { id } = req.params;
   const query = req.query.q;
+  console.log(query);
 
   const database = await Database.findById(id);
   const finalQuery = formQuery(query, database.type, database.schema);
   const answer = await getSolution(finalQuery);
+  // console.log(answer);
 
   //save to database
   await Query.create({ question: query, answer, author: id });
-
-  res.status(200).json({ answer });
+  return res.status(200).json({ answer });
 };
