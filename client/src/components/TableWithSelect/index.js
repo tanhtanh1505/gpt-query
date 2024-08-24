@@ -7,7 +7,6 @@ const cx = classNames.bind(styles);
 function TableWithSelect({ icon, title, value, options, onChange }) {
    //const options = ['One', 'Two', 'Three', 'Four', 'Five'];
    const onOptionChangeHandler = (event) => {
-      console.log('User Selected Value - ', event.target.value);
       if (onChange) onChange(event.target.value);
    };
 

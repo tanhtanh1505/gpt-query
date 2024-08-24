@@ -52,6 +52,10 @@ module.exports.importDb = async (req, res) => {
     }
 
     const schema = await getMongoDBSchema(url);
+    if (!schema) {
+      return res.status(400).json({ message: "Invalid MongoDB URL" });
+    }
+
     const database = new Database({ name, type, schema, author: req.user._id });
     await database.save();
     return res.status(201).json({ message: "Database created successfully", database: database });

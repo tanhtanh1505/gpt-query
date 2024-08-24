@@ -5,6 +5,7 @@
    border-radius: 8px;
    max-width: 800px;
    margin-top: 50px;
+   margin-bottom: 50px;
    width: auto;
 }
 
@@ -17,6 +18,10 @@
 .button {
    display: flex;
    justify-content: center;
-   margin-top: 20px;
+   margin-top: 16px;
    margin-bottom: 20px;
+}
+
+.download-tool {
+   margin-top: 40px;
 }

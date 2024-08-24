@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '~/components/Button';
 import TableWithInput from '~/components/TableWithInput';
@@ -10,6 +10,7 @@ import styles from './NewDatabase.module.scss';
 import axios from 'axios';
 import { v4 as uuid } from 'uuid';
 import { dbTypes } from '~/utils/types/dbTypes';
+import { DatabasesContext } from '~/context/DatabaseContext';
 
 const cx = classNames.bind(styles);
 
@@ -17,6 +18,7 @@ function NewDatabase() {
    const [dbName, setDbName] = useState('');
    const [dbType, setDbType] = useState('MySQL');
    const [dbSchema, setDbSchema] = useState([]);
+   const { reloadDatabases } = useContext(DatabasesContext);
 
    let navigate = useNavigate();
 
@@ -33,11 +35,6 @@ function NewDatabase() {
    };
 
    const handleSubmit = () => {
-      console.log('Info');
-      console.log(dbName);
-      console.log(dbType);
-      console.log(dbSchema);
-
       if (!dbName || !dbType || !dbSchema) return alert('Please fill all the fields!');
 
       const tempDbSchema = [];
@@ -73,7 +70,7 @@ function NewDatabase() {
                },
             })
             .then((res) => {
-               console.log(res);
+               reloadDatabases();
                navigate(`${config.routes.database}/${res.data.database._id}`);
             })
             .catch((err) => {

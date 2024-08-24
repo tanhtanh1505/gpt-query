@@ -4,11 +4,25 @@ import config from '~/config';
 import Button from '../Button';
 import swal from 'sweetalert';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { materialDark, materialLight, materialOceanic } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { materialDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { useState, useEffect } from 'react';
 
 const cx = classNames.bind(styles);
 
 function Instruction({ importFromFile }) {
+   const [os, setOs] = useState('');
+
+   useEffect(() => {
+      const userAgent = window.navigator.userAgent;
+      if (userAgent.indexOf('Win') !== -1) {
+         setOs('Windows');
+      } else if (userAgent.indexOf('Mac') !== -1) {
+         setOs('MacOS');
+      } else {
+         setOs('Linux');
+      }
+   }, []);
+
    const getExportTool = () => {
       const user = JSON.parse(localStorage.getItem('user'));
       const token = user?.token;
@@ -43,27 +57,34 @@ function Instruction({ importFromFile }) {
                <>
                   <p>
                      To import the database structure, you must provide a database structure obtained from MySQL
-                     Workbench, PHP MyAdmin, or terminal export,...
-                     <br />
-                     Or use our export tool to get the database structure.
+                     Workbench, PHP MyAdmin,... or other faster options below.
                   </p>
-                  <Button onClick={getExportTool} primary className={cx('button')}>
-                     Download Export Tool
-                  </Button>
-                  <br />
-                  <p>
-                     After downloading the tool, open the terminal where the file is downloaded and run the following
-                     commands:
-                  </p>
-                  <SyntaxHighlighter language="bash" style={materialDark} showLineNumbers>
-                     {`chmod +x gpt-query-export-tool.bin
+                  <div className={cx('download-tool')}>
+                     <b>Via CMD</b>
+                     <SyntaxHighlighter language="bash" style={materialDark} showLineNumbers>
+                        {os === 'Windows'
+                           ? `"C:\\Program Files\\MySQL\\MySQL Server X.X\\bin\\mysqldump.exe" --no-data -u [user_name] -p [database_name] > db_struct.sql`
+                           : `mysqldump --no-data -u [user_name] -p [database_name] > db_struct.sql`}
+                     </SyntaxHighlighter>
+                  </div>
+                  <div className={cx('download-tool')}>
+                     <b>Or use our export tool to get the database structure.</b>
+                     <Button onClick={getExportTool} primary className={cx('button')}>
+                        Download Export Tool
+                     </Button>
+                     <p>
+                        After downloading the tool, open the terminal where the file is downloaded and run the following
+                        commands:
+                     </p>
+                     <SyntaxHighlighter language="bash" style={materialDark} showLineNumbers>
+                        {`chmod +x gpt-query-export-tool.bin
 ./gpt-query-export-tool.bin`}
-                  </SyntaxHighlighter>
-                  <br />
-                  <p>
-                     The tool will generate a file named <b>{'<schema>.sql'}</b>. You can use this file to import the
-                     database structure.
-                  </p>
+                     </SyntaxHighlighter>
+                     <p>
+                        The tool will generate a file named <b>{'<schema>.sql'}</b>. You can use this file to import the
+                        database structure.
+                     </p>
+                  </div>
                </>
             ) : (
                <>

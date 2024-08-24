@@ -3,34 +3,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames/bind';
 import config from '~/config';
 import Menu, { MenuItem } from './Menu';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect, useContext } from 'react';
 import styles from './Sidebar.module.scss';
+import { DatabasesContext } from '~/context/DatabaseContext';
 
 const cx = classNames.bind(styles);
 
 function Sidebar() {
    const [user, setUser] = useState({});
-   const [databases, setDatabases] = useState([]);
+   const { databases } = useContext(DatabasesContext);
 
    useEffect(() => {
       const theUser = localStorage.getItem('user');
       if (theUser && !theUser.includes('undefined')) {
          setUser(JSON.parse(theUser));
-
-         axios
-            .get(`${config.api.url}/database/name`, {
-               headers: {
-                  Authorization: `Bearer ${JSON.parse(theUser).token}`,
-               },
-            })
-            .then((res) => {
-               setDatabases(res.data.databases);
-            });
-      } else {
-         // get databases in local storage
-         const dbs = localStorage.getItem('databases');
-         if (dbs) setDatabases(JSON.parse(dbs));
       }
    }, []);
 

@@ -4,12 +4,12 @@ import { useState } from 'react';
 
 const cx = classNames.bind(styles);
 
-function TableWithImport({ title, url, onChangeUrl, onChangeFile, onChangeImportFromUrl }) {
-   const [urlMode, setUrlMode] = useState(true);
+function TableWithImport({ title, url, onChangeUrl, onChangeFile, onChangeImportFromFile }) {
+   const [importFromFileMode, setImportFromFileMode] = useState(true);
 
    const handleChangeMode = () => {
-      setUrlMode(!urlMode);
-      onChangeImportFromUrl(urlMode);
+      onChangeImportFromFile(!importFromFileMode);
+      setImportFromFileMode(!importFromFileMode);
    };
 
    const handleChangeUrl = (event) => {
@@ -31,16 +31,18 @@ function TableWithImport({ title, url, onChangeUrl, onChangeFile, onChangeImport
          <div className={cx('header')}>
             <div className={cx('title')}>{title}</div>
             <div className={cx('mode')}>
-               <button className={urlMode && cx('active')} onClick={handleChangeMode}>
-                  Url
-               </button>
-               <button className={!urlMode && cx('active')} onClick={handleChangeMode}>
+               <button className={importFromFileMode && cx('active')} onClick={handleChangeMode}>
                   File
+               </button>
+               <button className={!importFromFileMode && cx('active')} onClick={handleChangeMode}>
+                  Url
                </button>
             </div>
          </div>
          <div className={cx('body')}>
-            {urlMode ? (
+            {importFromFileMode ? (
+               <input className={cx('file')} onChange={handleChangeFile} type="file" />
+            ) : (
                <input
                   className={cx('url')}
                   onChange={handleChangeUrl}
@@ -48,8 +50,6 @@ function TableWithImport({ title, url, onChangeUrl, onChangeFile, onChangeImport
                   type="text"
                   placeholder="Ex: mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<database>?retryWrites=true&w=majority"
                />
-            ) : (
-               <input className={cx('file')} onChange={handleChangeFile} type="file" />
             )}
          </div>
       </div>

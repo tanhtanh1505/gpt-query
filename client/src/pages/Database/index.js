@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { useState, useEffect, Fragment } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './Database.module.scss';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -7,7 +7,6 @@ import config from '~/config';
 import Button from '~/components/Button';
 import TableWithSchema from '~/components/TableWithSchema';
 import TableWithSelect from '~/components/TableWithSelect';
-import { dbTypes } from '~/utils/types/dbTypes';
 import { useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
 import TableWithInput from '~/components/TableWithInput';
@@ -60,10 +59,6 @@ function Database() {
    // const handleChangeDbName = (event) => {
    //    setDbName(event.target.value);
    // };
-
-   const handleChangeDbType = (value) => {
-      setDbType(value);
-   };
 
    const handleChangeDbSchema = (dbSchema) => {
       setDbSchema(dbSchema);
@@ -167,7 +162,7 @@ function Database() {
                         Close
                      </Button>
                   </div>
-                  <TableWithSelect value={dbType} options={dbTypes} onChange={handleChangeDbType} />
+                  <TableWithSelect value={dbType} options={[dbType]} />
                   <div className={cx('db-schema')}>
                      <TableWithSchema data={dbSchema} onChange={handleChangeDbSchema} />
                   </div>

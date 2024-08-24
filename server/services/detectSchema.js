@@ -1,7 +1,13 @@
 const { MongoClient } = require("mongodb");
 
 module.exports.getMongoDBSchema = async (uri) => {
-  const client = await MongoClient.connect(uri, { useUnifiedTopology: true });
+  let client;
+  try {
+    client = await MongoClient.connect(uri, { useUnifiedTopology: true });
+  } catch (err) {
+    return null;
+  }
+
   try {
     const db = client.db();
     const collections = await db.collections();

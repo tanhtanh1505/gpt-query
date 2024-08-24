@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '~/components/Button';
 import TableWithInput from '~/components/TableWithInput';
@@ -11,6 +11,7 @@ import { dbTypes } from '~/utils/types/dbTypes';
 import TableWithImport from '~/components/TableWithImport';
 import swal from 'sweetalert';
 import Instruction from '~/components/Instruction';
+import { DatabasesContext } from '~/context/DatabaseContext';
 
 const cx = classNames.bind(styles);
 
@@ -19,7 +20,8 @@ function ImportDatabase() {
    const [dbType, setDbType] = useState('MySQL');
    const [url, setUrl] = useState('');
    const [file, setFile] = useState();
-   const [isImportFromUrl, setIsImportFromUrl] = useState(false);
+   const [isImportFromFile, setIsImportFromFile] = useState(true);
+   const { reloadDatabases } = useContext(DatabasesContext);
 
    let navigate = useNavigate();
 
@@ -39,8 +41,8 @@ function ImportDatabase() {
       setFile(file);
    };
 
-   const handleChangeImportFromUrl = (isImportFromUrl) => {
-      setIsImportFromUrl(isImportFromUrl);
+   const handleChangeImportFromFile = (isImportFromFile) => {
+      setIsImportFromFile(isImportFromFile);
    };
 
    const handleSubmit = () => {
@@ -64,7 +66,7 @@ function ImportDatabase() {
                },
             })
             .then((res) => {
-               console.log(res);
+               reloadDatabases();
                navigate(`${config.routes.database}/${res.data.database._id}`);
             })
             .catch((err) => {
@@ -90,7 +92,7 @@ function ImportDatabase() {
                url={url}
                onChangeFile={handleChangeFile}
                onChangeUrl={handleChangeUrl}
-               onChangeImportFromUrl={handleChangeImportFromUrl}
+               onChangeImportFromFile={handleChangeImportFromFile}
             />
 
             <div className={cx('action-buttons')}>
@@ -101,7 +103,7 @@ function ImportDatabase() {
                   Create database
                </Button>
             </div>
-            <Instruction importFromFile={isImportFromUrl} />
+            <Instruction importFromFile={isImportFromFile} />
          </center>
       </div>
    );
