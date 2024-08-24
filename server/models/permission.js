@@ -8,7 +8,7 @@ const PermissionSchema = Schema({
   },
   queryRemain: {
     type: Number,
-    default: 5,
+    default: 20,
   },
 });
 

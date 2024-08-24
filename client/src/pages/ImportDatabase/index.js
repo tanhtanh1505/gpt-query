@@ -10,6 +10,7 @@ import axios from 'axios';
 import { dbTypes } from '~/utils/types/dbTypes';
 import TableWithImport from '~/components/TableWithImport';
 import swal from 'sweetalert';
+import Instruction from '~/components/Instruction';
 
 const cx = classNames.bind(styles);
 
@@ -18,6 +19,7 @@ function ImportDatabase() {
    const [dbType, setDbType] = useState('MySQL');
    const [url, setUrl] = useState('');
    const [file, setFile] = useState();
+   const [isImportFromUrl, setIsImportFromUrl] = useState(false);
 
    let navigate = useNavigate();
 
@@ -37,13 +39,11 @@ function ImportDatabase() {
       setFile(file);
    };
 
-   const handleSubmit = () => {
-      console.log('Info');
-      console.log(dbName);
-      console.log(dbType);
-      console.log(url);
-      console.log(file);
+   const handleChangeImportFromUrl = (isImportFromUrl) => {
+      setIsImportFromUrl(isImportFromUrl);
+   };
 
+   const handleSubmit = () => {
       if (!dbName || !dbType || !(url || file)) return alert('Please fill all the fields!');
 
       const user = JSON.parse(localStorage.getItem('user'));
@@ -90,6 +90,7 @@ function ImportDatabase() {
                url={url}
                onChangeFile={handleChangeFile}
                onChangeUrl={handleChangeUrl}
+               onChangeImportFromUrl={handleChangeImportFromUrl}
             />
 
             <div className={cx('action-buttons')}>
@@ -100,6 +101,7 @@ function ImportDatabase() {
                   Create database
                </Button>
             </div>
+            <Instruction importFromFile={isImportFromUrl} />
          </center>
       </div>
    );

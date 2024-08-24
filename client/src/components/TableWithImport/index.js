@@ -4,11 +4,12 @@ import { useState } from 'react';
 
 const cx = classNames.bind(styles);
 
-function TableWithImport({ title, url, onChangeUrl, onChangeFile }) {
+function TableWithImport({ title, url, onChangeUrl, onChangeFile, onChangeImportFromUrl }) {
    const [urlMode, setUrlMode] = useState(true);
 
    const handleChangeMode = () => {
       setUrlMode(!urlMode);
+      onChangeImportFromUrl(urlMode);
    };
 
    const handleChangeUrl = (event) => {
@@ -45,7 +46,7 @@ function TableWithImport({ title, url, onChangeUrl, onChangeFile }) {
                   onChange={handleChangeUrl}
                   value={url}
                   type="text"
-                  placeholder="Ex: mongodb://localhost:27017/test"
+                  placeholder="Ex: mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<database>?retryWrites=true&w=majority"
                />
             ) : (
                <input className={cx('file')} onChange={handleChangeFile} type="file" />

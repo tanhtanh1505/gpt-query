@@ -27,7 +27,7 @@ module.exports.get = async (req, res) => {
   const { id } = req.params;
   const database = await Database.findById(id);
 
-  const queries = await Query.find({ author: id });
+  const queries = await Query.find({ author: id }).sort({ createdAt: -1 }).limit(20);
   const combine = { ...database._doc, queries };
 
   res.status(200).json({ database: combine });
@@ -97,4 +97,8 @@ module.exports.query = async (req, res) => {
   //save to database
   await Query.create({ question: query, answer, author: id });
   return res.status(200).json({ answer });
+};
+
+module.exports.downloadExportTool = async (req, res) => {
+  res.download("./data/tool/gpt-query-export-db-tool");
 };

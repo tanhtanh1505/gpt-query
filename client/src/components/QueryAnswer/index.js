@@ -1,6 +1,8 @@
 import axios from 'axios';
 import classNames from 'classnames/bind';
 import { useEffect } from 'react';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { materialDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import config from '~/config';
 import styles from './QueryAnswer.module.scss';
 
@@ -24,7 +26,13 @@ function QueryAnswer({ id, body, loading }) {
 
    return (
       <div className={cx('wrapper')}>
-         <p className={cx('body')}>{loading ? 'Please wait...' : body}</p>
+         {loading ? (
+            'Please wait...'
+         ) : (
+            <SyntaxHighlighter language="sql" style={materialDark} showLineNumbers>
+               {body}
+            </SyntaxHighlighter>
+         )}
       </div>
    );
 }

@@ -55,7 +55,7 @@ function Database() {
             setDbSchema(database.schema);
          }
       }
-   }, [id]);
+   }, [id, loading]);
 
    // const handleChangeDbName = (event) => {
    //    setDbName(event.target.value);
@@ -175,6 +175,11 @@ function Database() {
                      title="⌨ Prompt (ctrl + Enter to submit)"
                      textArea="Write your prompt. Ex: Which supplier sold more products in the current year?"
                      onChange={handleChangeQuery}
+                     onKeyDown={(e) => {
+                        if (e.ctrlKey && e.key === 'Enter') {
+                           handleSubmit();
+                        }
+                     }}
                   />
                   <div className={cx('btn-submit')}>
                      <Button primary onClick={handleSubmit}>
@@ -183,18 +188,20 @@ function Database() {
                   </div>
 
                   <h2 className={cx('title')}>History</h2>
-                  {history &&
-                     history.length > 0 &&
-                     history.map((query, index) => (
-                        <HistoryItem
-                           query={query.question}
-                           answer={query.answer}
-                           inputTokens={query.question.length}
-                           outputTokens={query.answer.length}
-                           key={index}
-                           openAnswer={openModalWithContent}
-                        />
-                     ))}
+                  <div className={cx('history')}>
+                     {history &&
+                        history.length > 0 &&
+                        history.map((query, index) => (
+                           <HistoryItem
+                              query={query.question}
+                              answer={query.answer}
+                              inputTokens={query.question.length}
+                              outputTokens={query.answer.length}
+                              key={index}
+                              openAnswer={openModalWithContent}
+                           />
+                        ))}
+                  </div>
                </div>
             </center>
 

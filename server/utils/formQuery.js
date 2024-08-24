@@ -1,5 +1,5 @@
 module.exports.formQuery = (query, type, schema) => {
-  let preQuery = `I have a ${type} database which have tables:\n\n`;
+  let preQuery = `Type: ${type}\n\nTables:\n`;
   schema.forEach((table) => {
     preQuery += `${table.name}(`;
     table.columns.forEach((column) => {

@@ -14,6 +14,10 @@ const QuerySchema = Schema({
     type: Schema.Types.ObjectId,
     ref: "Database",
   },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 module.exports = mongoose.model("Query", QuerySchema);

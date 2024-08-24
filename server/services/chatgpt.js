@@ -7,26 +7,22 @@ const openai = new OpenAI({
 
 module.exports.getSolution = async (text) => {
   const response = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo",
+    model: "gpt-4o-mini",
     messages: [
-      { role: "user", content: "You are a database expert." },
       {
-        role: "user",
-        content: "You need generate only query and return for me. Dont explain for it or return another.",
-      },
-      {
-        role: "assistant",
-        content: "OK, I will try my best. I will return for you only a query.",
+        role: "system",
+        content:
+          "You are a database expert. Based on the provided database structure, user query, and database type, generate an SQL query specific to that database type. Respond only with the SQL query, without any formatting or explanation.",
       },
       {
         role: "user",
         content: text,
       },
     ],
-    temperature: 0.7,
-    max_tokens: 2048,
-    top_p: 1,
+    temperature: 0.0,
+    max_tokens: 500,
+    top_p: 1.0,
   });
-  // console.log(response.choices[0].message);
+
   return response.choices[0].message.content.trim();
 };
